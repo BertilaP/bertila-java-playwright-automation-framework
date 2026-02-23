@@ -1,0 +1,16 @@
+# Maven build output
+target/
+
+# IntelliJ / IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# OS / logs
+.DS_Store
+*.log
+
+# Allure output
+allure-results/
+allure-report/
