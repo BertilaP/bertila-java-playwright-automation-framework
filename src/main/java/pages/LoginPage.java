@@ -3,7 +3,6 @@ package pages;
 import base.BasePage;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import io.qameta.allure.Step;
 import utils.ConfigReader;
 
 public class LoginPage extends BasePage {
@@ -23,7 +22,7 @@ public class LoginPage extends BasePage {
     // A simple, stable UI indicator that the Dashboard is loaded (better than only checking URL).
     private Locator dashboardHeader() { return page.locator("h6.oxd-topbar-header-breadcrumb-module"); }
 
-    @Step("Open Login page")
+
     public void openLoginPage() {
         // We externalize URLs/timeouts in config so tests can switch env without code changes.
         navigateTo(config.getBaseUrl());
@@ -32,7 +31,7 @@ public class LoginPage extends BasePage {
         usernameField().waitFor(new Locator.WaitForOptions().setTimeout(config.getTimeout()));
     }
 
-    @Step("Login with username: {username}")
+
     public void login(String username, String password) {
         // Using BasePage helpers keeps action + wait logic consistent across pages.
         waitAndFill(usernameField(), username, config.getTimeout());
@@ -40,7 +39,7 @@ public class LoginPage extends BasePage {
         waitAndClick(loginBtn(), config.getTimeout());
     }
 
-    @Step("Wait for Dashboard page")
+
     public void waitForDashboard() {
         // Use a navigation timeout for URL changes (page loads / redirects can take longer).
         page.waitForURL(config.getDashboardUrl(),
@@ -50,12 +49,12 @@ public class LoginPage extends BasePage {
         dashboardHeader().waitFor(new Locator.WaitForOptions().setTimeout(config.getTimeout()));
     }
 
-    @Step("Verify dashboard header is visible")
+
     public boolean isDashboardVisible() {
         return dashboardHeader().isVisible();
     }
 
-    @Step("Read login error message")
+
     public String getErrorMessage() {
         // For negative tests, returning empty string is a simple way to handle "message not found" cases.
         try {
