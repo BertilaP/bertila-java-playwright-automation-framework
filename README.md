@@ -84,6 +84,14 @@ These credentials are publicly available from the demo website and are included 
 
 In real-world projects, credentials and environment configurations should be managed securely using environment variables or secret management tools and should not be committed to version control.
 
+## Future Enhancements
+
+- Expand automation coverage to include full CRUD workflows  
+- Implement data-driven testing (DDT) using external test data sources  
+- Integrate cross-browser execution support  
+- Enhance reporting with detailed failure screenshots and logs  
+
+This framework will continue evolving to reflect scalable and maintainable automation design practices.
 ## Author
 
 Bertila 
