@@ -71,6 +71,18 @@ Includes: - Base URL - Credentials - Browser type - Headless mode -
 Timeout settings
 
 ------------------------------------------------------------------------
+## Test Environment & Credentials
+
+This framework uses the public OrangeHRM demo site for test execution:
+https://opensource-demo.orangehrmlive.com/
+
+Demo credentials used in the project:
+Username: Admin  
+Password: admin123  
+
+These credentials are publicly available from the demo website and are included for demonstration purposes only.
+
+In real-world projects, credentials and environment configurations should be managed securely using environment variables or secret management tools and should not be committed to version control.
 
 ## Author
 
