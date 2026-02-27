@@ -32,18 +32,22 @@ public class ConfigReader {
 
     // URLs
     public String getBaseUrl() {
+
         return getValue("base.url");
     }
 
     public String getDashboardUrl() {
+
         return getValue("dashboard.url");
     }
 
     public String getEmployeeListUrl() {
+
         return getValue("employeeList.url");
     }
 
     public String getEmployeeManagementUrl() {
+
         return getValue("employeeManagement.url");
     }
 

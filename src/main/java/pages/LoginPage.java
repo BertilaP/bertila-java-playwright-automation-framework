@@ -39,6 +39,15 @@ public class LoginPage extends BasePage {
         waitAndClick(loginBtn(), config.getTimeout());
     }
 
+    public void loginWithValidUser() {
+        login(config.getValidUsername(), config.getValidPassword());
+        waitForDashboard(); // optional but recommended
+    }
+
+    public void loginWithInvalidUser() {
+        login(config.getInvalidUsername(), config.getInvalidPassword());
+    }
+
 
     public void waitForDashboard() {
         // Use a navigation timeout for URL changes (page loads / redirects can take longer).
