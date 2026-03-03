@@ -11,33 +11,31 @@ public class LoginTest extends BaseTest {
     private LoginPage loginPage;
 
     @BeforeEach
-    public void setupTest() {
-        // BaseTest creates a fresh Page per test (test isolation: no shared state between tests).
+    void setupTest() {
         loginPage = new LoginPage(page, config);
-
-        // Keeping navigation in setup reduces repetition and makes each test focus on only assertions.
         loginPage.openLoginPage();
     }
 
     @Test
-    @DisplayName("Login with valid credentials")
-    public void testValidLogin() {
-        // Test data is read from config to avoid hardcoding credentials in code.
-        loginPage.login(config.getValidUsername(), config.getValidPassword());
-        loginPage.waitForDashboard();
+    @DisplayName("Login succeeds with valid credentials")
+    void shouldLoginWithValidCredentials() {
+        loginPage.loginWithValidUser();
 
-        // UI assertion: confirms login succeeded beyond just a URL change.
-        assertTrue(loginPage.isDashboardVisible(), "Dashboard header should be visible");
+        // Assertion: confirms we actually landed on Dashboard (not just “no error”)
+        assertTrue(loginPage.isDashboardVisible(), "Dashboard header should be visible after login");
     }
 
     @Test
-    @DisplayName("Login with invalid credentials (Negative)")
-    public void testInvalidLogin() {
-        loginPage.login(config.getInvalidUsername(), config.getInvalidPassword());
+    @DisplayName("Login fails with invalid credentials and shows error message")
+    void shouldShowErrorForInvalidCredentials() {
+        loginPage.loginWithInvalidUser();
 
-        // Negative assertion: confirm user sees a meaningful validation message.
         String error = loginPage.getErrorMessage();
-        assertFalse(error.isEmpty(), "Error message should appear");
+
+        // Assertion 1: error should exist (not blank)
+        assertFalse(error == null || error.trim().isEmpty(), "Error message should be displayed for invalid login");
+
+        // Assertion 2: error content should mention invalid (case-insensitive)
         assertTrue(error.toLowerCase().contains("invalid"), "Error message should mention 'invalid'");
     }
 }
