@@ -80,7 +80,6 @@ public class EmployeeManagementPage {
         searchBtn.click();
 
         waitForResultsArea();
-        page.waitForTimeout(500);
     }
 
     public boolean isEmployeeInList(String employeeId) {
@@ -170,14 +169,36 @@ public class EmployeeManagementPage {
 
     public void waitForResultsArea() {
         Locator rows = page.locator(".oxd-table-row");
-        Locator noRecords = page.locator("text=No Records Found");
+        Locator noRecords = page.locator(".oxd-table-body:has-text('No Records Found')");
 
-        page.waitForTimeout(400);
+        long end = System.currentTimeMillis() + config.getTimeout();
 
-        if (rows.count() > 0) {
-            rows.first().waitFor(new Locator.WaitForOptions().setTimeout(config.getTimeout()));
-        } else if (noRecords.count() > 0) {
-            noRecords.first().waitFor(new Locator.WaitForOptions().setTimeout(config.getTimeout()));
+        while (System.currentTimeMillis() < end) {
+            boolean rowsVisible = rows.count() > 0 && rows.first().isVisible();
+            boolean noRecordsVisible = noRecords.count() > 0 && noRecords.isVisible();
+
+            if (rowsVisible || noRecordsVisible) {
+                return;
+            }
+            page.waitForTimeout(200);
         }
+
+        throw new AssertionError("Results area did not load (no rows / no 'No Records Found').");
+    }
+
+    public boolean waitUntilEmployeeAppearsInList(String employeeId) {
+        searchByEmployeeId(employeeId);
+
+        Locator cell = page.locator(".oxd-table-body").locator("text=" + employeeId).first();
+        Locator noRecords = page.locator(".oxd-table-body:has-text('No Records Found')");
+
+        long end = System.currentTimeMillis() + config.getTimeout();
+
+        while (System.currentTimeMillis() < end) {
+            if (cell.count() > 0 && cell.isVisible()) return true;
+            if (noRecords.count() > 0 && noRecords.isVisible()) return false;
+            page.waitForTimeout(200);
+        }
+        return false;
     }
 }

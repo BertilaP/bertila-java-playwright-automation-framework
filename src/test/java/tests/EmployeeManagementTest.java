@@ -47,11 +47,13 @@ public class EmployeeManagementTest extends BaseTest {
         empPage.addEmployee("John", "Doe", empId);
         empPage.waitForPersonalDetailsPage();
 
-        assertTrue(recheckInList(empId), "Employee should exist after creation");
+        assertTrue(empPage.waitUntilEmployeeAppearsInList(empId),
+                "Employee should exist after creation");
 
         empPage.editEmployeeName(empId, "Jane", "Smith");
 
-        assertTrue(recheckInList(empId), "Employee should still exist after edit");
+        assertTrue(empPage.waitUntilEmployeeAppearsInList(empId),
+                "Employee should exist after creation");
     }
 
     @Test
@@ -63,7 +65,8 @@ public class EmployeeManagementTest extends BaseTest {
         empPage.addEmployee("John", "Doe", empId);
         empPage.waitForPersonalDetailsPage();
 
-        assertTrue(recheckInList(empId), "Employee should exist after creation");
+        assertTrue(empPage.waitUntilEmployeeAppearsInList(empId),
+                "Employee should exist after creation");
 
         empPage.deleteEmployee(empId);
 
@@ -81,7 +84,8 @@ public class EmployeeManagementTest extends BaseTest {
         empPage.addEmployee("John", "Doe", empId);
         empPage.waitForPersonalDetailsPage();
 
-        assertTrue(recheckInList(empId), "Employee should exist after first creation");
+        assertTrue(empPage.waitUntilEmployeeAppearsInList(empId),
+                "Employee should exist after creation");
 
         // Second creation with same ID (negative)
         empPage.openAddEmployeePage();
@@ -92,11 +96,6 @@ public class EmployeeManagementTest extends BaseTest {
 
         assertTrue(empPage.isDuplicateEmployeeIdErrorVisible(),
                 "Duplicate employee ID error should be displayed");
-    }
-
-    private boolean recheckInList(String empId) {
-        empPage.searchByEmployeeId(empId);
-        return empPage.isEmployeeInList(empId);
     }
 
     private String generateNumericEmpId() {
