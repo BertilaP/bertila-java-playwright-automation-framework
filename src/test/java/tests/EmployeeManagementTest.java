@@ -84,8 +84,8 @@ public class EmployeeManagementTest extends BaseTest {
         empPage.addEmployee("John", "Doe", empId);
         empPage.waitForPersonalDetailsPage();
 
-        assertTrue(empPage.waitUntilEmployeeAppearsInList(empId),
-                "Employee should exist after creation");
+        assertFalse(empPage.waitUntilEmployeeAppearsInList(empId),
+                "Forcing failure to verify CI screenshot");
 
         // Second creation with same ID (negative)
         empPage.openAddEmployeePage();
