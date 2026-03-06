@@ -14,10 +14,14 @@ public class LoginPage extends BasePage {
     }
 
     // Locators are kept as methods (instead of fields) so they always resolve against the current page state.
-    private Locator usernameField() { return page.locator("input[name='username']"); }
-    private Locator passwordField() { return page.locator("input[name='password']"); }
-    private Locator loginBtn() { return page.locator("button[type='submit']"); }
-    private Locator errorMsg() { return page.locator("p.oxd-text.oxd-text--p.oxd-alert-content-text"); }
+    private Locator usernameField() {
+        return page.locator("input[name='username']"); }
+    private Locator passwordField() {
+        return page.locator("input[name='password']"); }
+    private Locator loginBtn() {
+        return page.locator("button[type='submit']"); }
+    private Locator errorMsg() {
+        return page.locator("p.oxd-text.oxd-text--p.oxd-alert-content-text"); }
 
     // A simple, stable UI indicator that the Dashboard is loaded (better than only checking URL).
     private Locator dashboardHeader() { return page.locator("h6.oxd-topbar-header-breadcrumb-module"); }
