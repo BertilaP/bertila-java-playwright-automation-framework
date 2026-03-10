@@ -3,7 +3,6 @@ package tests;
 import base.BaseTest;
 import org.junit.jupiter.api.*;
 import pages.LoginPage;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginTest extends BaseTest {
@@ -20,7 +19,6 @@ public class LoginTest extends BaseTest {
     @DisplayName("Login succeeds with valid credentials")
     void shouldLoginWithValidCredentials() {
         loginPage.loginWithValidUser();
-
         // Assertion: confirms we actually landed on Dashboard (not just “no error”)
         assertTrue(loginPage.isDashboardVisible(), "Dashboard header should be visible after login");
     }
