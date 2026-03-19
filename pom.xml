@@ -77,6 +77,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- JUnit parameterized testing support used for Data-Driven Testing (DDT) -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

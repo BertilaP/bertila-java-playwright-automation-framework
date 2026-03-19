@@ -1,0 +1,9 @@
+username,password,expectedResult
+Admin,admin123,success
+Admin,wrongpass,invalid_credentials
+wronguser,admin123,invalid_credentials
+wronguser,wrongpass,invalid_credentials
+"",admin123,required_fields
+Admin,"",required_fields
+"","",required_fields
+Admin,ADMIN123,invalid_credentials

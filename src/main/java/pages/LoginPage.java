@@ -13,51 +13,54 @@ public class LoginPage extends BasePage {
         this.config = config;
     }
 
-    // Locators are defined as methods so they resolve against the latest DOM state on dynamic pages.
     private Locator usernameField() {
-        return page.locator("input[name='username']"); }
+        return page.locator("input[name='username']");
+    }
+
     private Locator passwordField() {
-        return page.locator("input[name='password']"); }
+        return page.locator("input[name='password']");
+    }
+
     private Locator loginBtn() {
-        return page.locator("button[type='submit']"); }
+        return page.locator("button[type='submit']");
+    }
+
     private Locator errorMsg() {
-        return page.locator("p.oxd-text.oxd-text--p.oxd-alert-content-text"); }
+        return page.locator("p.oxd-text.oxd-text--p.oxd-alert-content-text");
+    }
 
-    // Locator for the Dashboard header to verify the page is loaded.
     private Locator dashboardHeader() {
-        return page.locator("h6.oxd-topbar-header-breadcrumb-module"); }
+        return page.locator("h6.oxd-topbar-header-breadcrumb-module");
+    }
 
+    private Locator requiredFieldMsg() {
+        return page.locator("span.oxd-input-field-error-message");
+    }
 
     public void openLoginPage() {
-        // Externalized URLs/timeouts in config so tests can switch env without code changes.
         navigateTo(config.getBaseUrl());
-
-        // Small "page ready" wait to avoid typing before the form is loaded.
         usernameField().waitFor(new Locator.WaitForOptions().setTimeout(config.getTimeout()));
     }
 
+    private String safeValue(String value) {
+        return value == null ? "" : value;
+    }
+
     public void login(String username, String password) {
-        // Using BasePage helpers keeps action + wait logic consistent across pages.
-        waitAndFill(usernameField(), username, config.getTimeout());
-        waitAndFill(passwordField(), password, config.getTimeout());
+        waitAndFill(usernameField(), safeValue(username), config.getTimeout());
+        waitAndFill(passwordField(), safeValue(password), config.getTimeout());
         waitAndClick(loginBtn(), config.getTimeout());
     }
 
     public void loginWithValidUser() {
         login(config.getValidUsername(), config.getValidPassword());
-        waitForDashboard(); // Waits for dashboard to load after login to ensure navigation is complete
-    }
-
-    public void loginWithInvalidUser() {
-        login(config.getInvalidUsername(), config.getInvalidPassword());
+        waitForDashboard();
     }
 
     public void waitForDashboard() {
-        // Use a navigation timeout for URL changes (page loads / redirects can take longer).
         page.waitForURL(config.getDashboardUrl(),
                 new Page.WaitForURLOptions().setTimeout(config.getNavigationTimeout()));
 
-        // Extra UI check: ensures page is actually usable after navigation.
         dashboardHeader().waitFor(new Locator.WaitForOptions().setTimeout(config.getTimeout()));
     }
 
@@ -66,11 +69,18 @@ public class LoginPage extends BasePage {
     }
 
     public String getErrorMessage() {
-        // For negative tests: return empty string if error message is not found, so assertions can handle validation without throwing exceptions.
         try {
             return waitAndGetText(errorMsg(), config.getTimeout());
         } catch (Exception e) {
             return "";
+        }
+    }
+
+    public boolean areRequiredFieldMessagesVisible() {
+        try {
+            return requiredFieldMsg().first().isVisible();
+        } catch (Exception e) {
+            return false;
         }
     }
 }
