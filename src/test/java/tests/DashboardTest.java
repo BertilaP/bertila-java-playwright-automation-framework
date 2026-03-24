@@ -36,4 +36,15 @@ public class DashboardTest extends BaseTest {
         dashboardPage.goToEmployeeList();
         assertTrue(dashboardPage.isOnEmployeeListPage(), "Should land on Employee List page");
     }
+
+    @Test
+    @DisplayName("User can logout successfully")
+    public void testLogoutSuccessfully() {
+        dashboardPage.logout();
+
+        LoginPage loginPage = new LoginPage(page, config);
+
+        assertTrue(loginPage.isLoginPageVisible(),
+                "User should be redirected to login page after logout");
+    }
 }

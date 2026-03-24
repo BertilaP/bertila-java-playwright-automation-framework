@@ -83,4 +83,16 @@ public class LoginPage extends BasePage {
             return false;
         }
     }
+
+    public boolean isLoginPageVisible() {
+        try {
+            page.waitForURL("**/auth/login",
+                    new Page.WaitForURLOptions().setTimeout(config.getNavigationTimeout()));
+
+            usernameField().waitFor(new Locator.WaitForOptions().setTimeout(config.getTimeout()));
+            return usernameField().isVisible();
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
