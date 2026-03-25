@@ -50,13 +50,20 @@ public class BaseTest {
         BrowserType.LaunchOptions options = new BrowserType.LaunchOptions().setHeadless(headless);
 
         String browserName = config.getBrowser().toLowerCase();
+        System.out.println("Running tests on browser: " + browserName);
 
-        if (browserName.equals("firefox")) {
-            browser = playwright.firefox().launch(options);
-        } else if (browserName.equals("webkit")) {
-            browser = playwright.webkit().launch(options);
-        } else {
-            browser = playwright.chromium().launch(options); // default chromium
+        switch (browserName) {
+            case "chromium":
+                browser = playwright.chromium().launch(options);
+                break;
+            case "firefox":
+                browser = playwright.firefox().launch(options);
+                break;
+            case "webkit":
+                browser = playwright.webkit().launch(options);
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported browser: " + browserName);
         }
     }
 

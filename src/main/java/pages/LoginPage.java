@@ -78,7 +78,9 @@ public class LoginPage extends BasePage {
 
     public boolean areRequiredFieldMessagesVisible() {
         try {
-            return requiredFieldMsg().first().isVisible();
+            Locator firstRequiredMessage = requiredFieldMsg().first();
+            firstRequiredMessage.waitFor(new Locator.WaitForOptions().setTimeout(config.getTimeout()));
+            return firstRequiredMessage.isVisible();
         } catch (Exception e) {
             return false;
         }

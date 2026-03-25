@@ -20,6 +20,11 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,47 +36,57 @@ jobs:
           java-version: "17"
           cache: maven
 
-      # Playwright needs browser binaries on the runner
-      - name: Install Playwright browsers (Chromium)
-        run: mvn -B exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"
+      - name: Install Playwright browser
+        run: mvn -B exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install ${{ matrix.browser }}"
 
-      - name: Run tests
-        run: mvn -B clean test
+      - name: Run tests on ${{ matrix.browser }}
+        run: mvn -B clean test -Dbrowser=${{ matrix.browser }}
 
-      # Keep raw results for debugging (even if tests fail)
       - name: Upload Allure results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results
+          name: allure-results-${{ matrix.browser }}
           path: target/allure-results
 
-      # Only publish the HTML report from main branch runs (clean + professional)
-      - name: Set up Node.js (for Allure CLI)
-        if: always() && github.ref == 'refs/heads/main'
+  publish-report:
+    if: always() && github.ref == 'refs/heads/main'
+    needs: tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all Allure result artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: downloaded-allure-results
+
+      - name: Merge Allure results
+        run: |
+          mkdir -p merged-allure-results
+          find downloaded-allure-results -type f -path "*/allure-results/*" -exec cp {} merged-allure-results/ \;
+
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
       - name: Install Allure CLI
-        if: always() && github.ref == 'refs/heads/main'
         run: npm i -g allure-commandline
 
       - name: Generate Allure HTML report
-        if: always() && github.ref == 'refs/heads/main'
-        run: allure generate target/allure-results --clean -o allure-report
+        run: allure generate merged-allure-results --clean -o allure-report
 
       - name: Configure GitHub Pages
-        if: always() && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
-        if: always() && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: allure-report
 
       - name: Deploy to GitHub Pages
-        if: always() && github.ref == 'refs/heads/main'
         id: deployment
         uses: actions/deploy-pages@v4
