@@ -72,6 +72,8 @@ public class BaseTest {
         page = browser.newPage();
         page.setDefaultTimeout(config.getTimeout());
         page.setDefaultNavigationTimeout(config.getNavigationTimeout());
+
+        Allure.parameter("Browser", config.getBrowser());
     }
 
     @AfterEach
