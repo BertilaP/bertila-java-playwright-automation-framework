@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     strategy:
       fail-fast: false
@@ -55,7 +55,7 @@ jobs:
   publish-report:
     if: always() && github.ref == 'refs/heads/main'
     needs: tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
