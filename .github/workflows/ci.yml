@@ -66,7 +66,8 @@ jobs:
       - name: Merge Allure results
         run: |
           mkdir -p merged-allure-results
-          find downloaded-allure-results -type f -path "*/allure-results/*" -exec cp {} merged-allure-results/ \;
+          find downloaded-allure-results -type f -name "*.json" -exec cp {} merged-allure-results/ \;
+          find downloaded-allure-results -type f -name "*.png" -exec cp {} merged-allure-results/ \;
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
