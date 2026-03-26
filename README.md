@@ -46,29 +46,54 @@ src/test/resources ├── config.properties └
 -------------------------------------------------------------------------
 ## Automated Test Coverage
 
-Login (DDT - 8 Scenarios)
-Valid login
-Invalid credentials (wrong username/password combinations)
-Password case sensitivity
-Required field validation (empty username/password)
+### Login (DDT – 8 Scenarios / 1 Test)
 
-Implemented using external CSV (@CsvFileSource) with categorized outcomes:
-success
-invalid_credentials
-required_fields
+- Valid login
+- Invalid credentials (wrong username/password combinations)
+- Password case sensitivity
+- Required field validation (empty username/password)
 
-Dashboard
-Verify PIM menu visibility after login
-Navigate to Employee List page
+Implemented using external CSV (`@CsvFileSource`) with categorized outcomes:
+- success
+- invalid_credentials
+- required_fields
 
-Employee Management (CRUD)
-Add new employee
-Edit employee details
-Delete employee
-Validate duplicate employee ID error
+---
 
-Employee Search
-Search employee by name and validate results
+### Dashboard (2 Tests)
+
+- Verify PIM menu visibility after login
+- Navigate to Employee List page
+
+---
+
+### Logout (1 Test)
+
+- Verify user can successfully logout and return to login page
+
+---
+
+### Employee Management (CRUD) (4 Tests)
+
+- Add new employee
+- Edit employee details
+- Delete employee
+- Validate duplicate employee ID error
+
+---
+
+### Employee Search (1 Test)
+
+- Search employee by name and validate results
+
+---
+
+## Total Test Execution
+
+- 8 DDT scenarios (Login)
+- 8 functional test cases (Dashboard, Logout, Employee workflows)
+
+- Total: 16 automated test executions
 
 ------------------------------------------------------------------------
 
