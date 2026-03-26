@@ -36,8 +36,12 @@ jobs:
           java-version: "17"
           cache: maven
 
-      - name: Install Playwright browser with dependencies
-        run: mvn -B exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps ${{ matrix.browser }}"
+      - name: Install Playwright system dependencies
+        run: mvn -B exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install-deps ${{ matrix.browser }}"
+
+      - name: Install Playwright browser
+        run: mvn -B exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install ${{ matrix.browser }}"
+
       - name: Run tests on ${{ matrix.browser }}
         run: mvn -B clean test -Dbrowser=${{ matrix.browser }}
 
