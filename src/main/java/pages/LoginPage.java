@@ -70,7 +70,10 @@ public class LoginPage extends BasePage {
 
     public String getErrorMessage() {
         try {
-            return waitAndGetText(errorMsg(), config.getTimeout());
+            Locator error = errorMsg();
+            error.waitFor(new Locator.WaitForOptions().setTimeout(config.getTimeout()));
+            String text = error.textContent();
+            return text != null ? text.trim() : "";
         } catch (Exception e) {
             return "";
         }

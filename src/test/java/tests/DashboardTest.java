@@ -27,7 +27,7 @@ public class DashboardTest extends BaseTest {
     @Test
     @DisplayName("PIM menu visible after login")
     public void testPimMenuVisible() {
-        assertFalse(dashboardPage.isPimMenuVisible(), "Intentional failure for debugging practice");
+        assertTrue(dashboardPage.isPimMenuVisible(), "PIM menu should be visible after login");
     }
 
     @Test
